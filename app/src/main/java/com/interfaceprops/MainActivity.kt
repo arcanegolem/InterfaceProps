@@ -59,7 +59,6 @@ fun ImageDescriptionTest(){
     Column(
         modifier = Modifier
             .fillMaxSize(),
-//            .padding(20.dp),
         verticalArrangement = if (!descriptionShowed) Arrangement.Top else Arrangement.Bottom,
         horizontalAlignment = if (!descriptionShowed) Alignment.End else Alignment.CenterHorizontally
     ) {
