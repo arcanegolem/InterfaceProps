@@ -1,5 +1,6 @@
 package com.interfaceprops
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,22 +12,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
+import com.interfaceprops.camera.CameraCapture
+import com.interfaceprops.camera.RequestCameraPermissions
 import com.interfaceprops.ui.theme.InterfacePropsTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,12 +35,43 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             InterfacePropsTheme {
-                ImageDescriptionTest()
+                MainComposable()
             }
         }
     }
 }
 
+val EMPTY_IMAGE_URI: Uri = Uri.parse("file://dev/null")
+
+@Composable
+fun MainComposable(){
+    var imageUri by remember { mutableStateOf(EMPTY_IMAGE_URI) }
+
+    if (imageUri != EMPTY_IMAGE_URI){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            AsyncImage(model = imageUri, contentDescription = null)
+            Button(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onClick = {
+                    imageUri = EMPTY_IMAGE_URI
+                }
+            ) {
+                Text("Remove image")
+            }
+        }
+    }
+    else {
+        CameraCapture(
+            modifier = Modifier.fillMaxSize(),
+            onImageFile = { file ->
+                imageUri = file.toUri()
+            }
+        )
+    }
+}
 
 @Composable
 fun ImageDescriptionTest(){
