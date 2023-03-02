@@ -8,7 +8,6 @@ import androidx.camera.core.ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -127,46 +126,6 @@ fun CameraCapture(
         }
     }
 }
-
-
-//@Composable
-//fun CameraCapture(
-//    modifier: Modifier = Modifier,
-//    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-//) {
-//    Box(modifier = modifier) {
-//        val context = LocalContext.current
-//        val lifecycleOwner = LocalLifecycleOwner.current
-//        var previewUseCase by remember { mutableStateOf<UseCase>(Preview.Builder().build()) }
-//        CameraPreview(
-//            modifier = Modifier.fillMaxSize(),
-//            onUseCase = {
-//                previewUseCase = it
-//            }
-//        )
-//        Button(
-//            modifier = Modifier
-//                .wrapContentSize()
-//                .padding(16.dp)
-//                .align(Alignment.BottomCenter),
-//            onClick = { /*TODO*/ }
-//        ) {
-//            Icon(imageVector = Icons.Filled.AddCircle, contentDescription = null)
-//        }
-//
-//        LaunchedEffect(previewUseCase) {
-//            val cameraProvider = context.getCameraProvider()
-//            try {
-//                cameraProvider.unbindAll()
-//                cameraProvider.bindToLifecycle(
-//                    lifecycleOwner, cameraSelector, previewUseCase
-//                )
-//            } catch (ex: Exception) {
-//                Log.e("CameraCapture", "Failed to bind camera use cases", ex)
-//            }
-//        }
-//    }
-//}
 
 
 suspend fun ImageCapture.takePicture(executor: Executor): File {
