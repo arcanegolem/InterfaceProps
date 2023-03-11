@@ -25,9 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import com.interfaceprops.camera.CameraCapture
-import com.interfaceprops.camera.RequestCameraPermissions
 import com.interfaceprops.ui.theme.InterfacePropsTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +43,11 @@ val EMPTY_IMAGE_URI: Uri = Uri.parse("file://dev/null")
 
 @Composable
 fun MainComposable(){
+    CameraScreen()
+}
+
+@Composable
+fun CameraScreen(){
     var imageUri by remember { mutableStateOf(EMPTY_IMAGE_URI) }
 
     if (imageUri != EMPTY_IMAGE_URI){

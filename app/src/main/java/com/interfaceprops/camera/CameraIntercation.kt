@@ -7,14 +7,15 @@ import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -97,20 +98,34 @@ fun CameraCapture(
                     previewUseCase = it
                 }
             )
-            IconButton(
+            Row(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.Black)
+                    .padding(vertical = 20.dp)
                     .align(Alignment.BottomCenter),
-                onClick = {
-                    coroutineScope.launch {
-                        imageCaptureUseCase.takePicture(context.executor).let {
-                            onImageFile(it)
+                horizontalArrangement = Arrangement.Center
+            ){
+                var buttonColor by remember { mutableStateOf(Color.LightGray) }
+
+                Box(
+                    modifier = Modifier
+                        .size(70.dp)
+                        .border(width = 2.dp, color = Color.Gray, shape = CircleShape)
+                        .padding(5.dp)
+                        .clip(CircleShape)
+                        .background(color = buttonColor)
+                        .clickable {
+                            coroutineScope.launch {
+                                buttonColor = Color.Gray
+                                imageCaptureUseCase
+                                    .takePicture(context.executor)
+                                    .let {
+                                        onImageFile(it)
+                                    }
+                            }
                         }
-                    }
-                }
-            ) {
-                Icon(modifier = Modifier.size(60.dp),imageVector = Icons.Filled.AddCircle, contentDescription = null, tint = Color.White)
+                )
             }
         }
         LaunchedEffect(previewUseCase) {
